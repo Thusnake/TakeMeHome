@@ -3,7 +3,7 @@
 import pygame
 import os
 import random
-from paper import Paper
+from paper import *
 
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
@@ -28,7 +28,13 @@ FPS = 60                           # desired max. framerate in frames per second
 
 allgroup = pygame.sprite.Group()
 
-Paper.groups = allgroup
+Image.groups = allgroup
+
+Bin()
+Desk()
+PaperStack()
+Stamp()
+Paper()
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
@@ -39,9 +45,11 @@ while mainloop:
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
         mainloop = False # user pressed ESC
-  # create new Bird on mouseclick
+  # create new Paper on mouseclick
   if pygame.mouse.get_pressed()[0]:
-    Paper(pygame.mouse.get_pos())
+    for sprite in allgroup.sprites():
+      if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+        sprite.onClicked()
   
   pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
 
