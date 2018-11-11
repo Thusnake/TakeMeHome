@@ -18,10 +18,14 @@ def write(msg="pygame is cool"):
   mytext = mytext.convert_alpha()
   return mytext
 
-background = pygame.Surface((screen.get_width(), screen.get_height()))
-background.fill((255,255,255))     # fill white
-background = background.convert()  # jpg can not have transparency
-screen.blit(background, (0,0))     # blit background on screen (overwriting all)
+workBackground = pygame.Surface((screen.get_width(), screen.get_height()))
+workBackground.fill((255,255,255))     # fill white
+workBackground = workBackground.convert()  # jpg can not have transparency
+phoneBackground = pygame.Surface((screen.get_width(), screen.get_height()))
+phoneBackground.fill((111,111,111))     # fill white
+phoneBackground = phoneBackground.convert()  # jpg can not have transparency
+screen.blit(workBackground, (0,0))     # blit background on screen (overwriting all)
+isWorkBackground = True
 clock = pygame.time.Clock()        # create pygame clock object 
 mainloop = True
 FPS = 60                           # desired max. framerate in frames per second. 
@@ -43,6 +47,14 @@ while mainloop:
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
         mainloop = False # user pressed ESC
+      elif event.key == pygame.K_SPACE:
+        if isWorkBackground:
+          screen.blit(phoneBackground, (0,0))
+          isWorkBackground = False
+        else : 
+          screen.blit(workBackground, (0,0))    
+          isWorkBackground = True
+
   # create new Paper on mouseclick
   if pygame.mouse.get_pressed()[0]:
     for sprite in allgroup.sprites():
@@ -51,8 +63,9 @@ while mainloop:
   
   pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
 
-  allgroup.clear(screen, background)
-  allgroup.update(seconds)
-  allgroup.draw(screen)
+  if isWorkBackground :
+    allgroup.clear(screen, workBackground)
+    allgroup.update(seconds)
+    allgroup.draw(screen)
 
   pygame.display.flip()
