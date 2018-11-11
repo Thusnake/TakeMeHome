@@ -3,15 +3,20 @@ class Player:
         self.health = 100
         self.money = 1000
 
-    increaseHealth(amount):
+    def increaseHealth(self, amount):
      self.health += amount
-    decreaseHealth(amount):
+
+    def decreaseHealth(self, amount):
      self.health -= amount
-    increaseMoney(amount):
+
+    def increaseMoney(self, amount):
      self.money += amount
-    decreaseMoney(amount):
+
+    def decreaseMoney(self, amount):
      self.money -= amount
-    getHealth():
+
+    def getHealth(self):
      return self.health
-    getMoney()
+
+    def getMoney(self):
      return self.money
