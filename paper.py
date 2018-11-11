@@ -55,3 +55,11 @@ class Stamp(Image):
   def onClicked(self):
     self.destination = STAMP
     self.pos[0:2] = PAPER
+
+class ClashApp(Image):
+  def __init__(self):
+    Image.__init__(self, APPL1, "images/yelling_icon.png")
+
+class HornApp(Image):
+  def __init__(self):
+    Image.__init__(self, APPR1, "images/hp_icon.png")
