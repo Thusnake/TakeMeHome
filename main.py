@@ -68,7 +68,9 @@ hornNotUsed = True
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
-  player.decreaseHealth(seconds * 2)
+  if isWorkBackground:
+    player.decreaseHealth(seconds * 2)
+
   if player.getHealth() <= 0 :
     message = Message(gameOverHealth, 0)
   for event in pygame.event.get():
@@ -128,6 +130,7 @@ while mainloop:
               elif isinstance(sprite, FloppyApp):
                 # phoneBackground = pygame.image.load("images/floppy_bg.png")
                 # phoneBackground.get_rect().centery = 540
+                # phoneBackground.get_rect().centerx = WIDTH/2
                 # phoneBackground = phoneBackground.convert()
                 floppyBird = FloppyBird()
 
@@ -141,6 +144,7 @@ while mainloop:
     floppyBird.run()
     screen.blit(floppyBird.screen, [690, 52])
     if floppyBird.done == 1:
+      player.increaseHealth(floppyBird.score ** 2)
       floppyBird = None
   elif isWorkBackground :
     # Get the latest paper.

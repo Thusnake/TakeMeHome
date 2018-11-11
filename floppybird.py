@@ -17,6 +17,12 @@ class FloppyBird:
         self.score = 0
         self.screen = pygame.Surface(self.size)
 
+        self.bg = pygame.image.load("images/floppy_bg.png")
+        self.bg.get_rect().centery = 540
+        self.bg = self.bg.convert()  # jpg can not have transparency
+
+        
+
     def Score(self, score):
         self.font = pygame.font.SysFont(None, 30)
         self.text = self.font.render("Memory collected: " + str(score), True, (0, 0, 0))
@@ -45,13 +51,13 @@ class FloppyBird:
                 self.speed_y = 5;
 
     def run(self):
-        self.screen.fill((255,255,255))
+        self.screen.blit(self.bg, [0,0])
         self.column(self.column_xlocation, self.column_ylocation, self.column_xsize, self.column_ysize)
         self.Score(self.score)
         self.floppybird(self.x, self.y)
         self.column_xlocation -= self.column_speed
         self.y += self.speed_y
-        if self.y > 800:#~0.94*height
+        if self.y > self.size[1] or self.y < 0:#~0.94*height
             self.end()
             self.column_speed = 0
             self.speed_y = 0
@@ -62,7 +68,7 @@ class FloppyBird:
             self.column_xlocation = 545
             self.column_ysize = randint(0, 673)#~0.7*height
 
-        if self.x + 20 > self.column_xlocation and self.x - 50 < self.column_xlocation + self.column_xsize and (self.y + 20 > self.column_ysize+150 or self.y - 20 < self.column_ysize):
+        if self.x + 20 > self.column_xlocation and self.x + 20 < self.column_xlocation + self.column_xsize and (self.y + 20 > self.column_ysize+150 or self.y - 20 < self.column_ysize):
             self.end()
             self.column_speed = 0
             self.speed_y = 0
