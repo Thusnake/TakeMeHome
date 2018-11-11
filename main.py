@@ -5,6 +5,7 @@ import os
 import random
 from paper import *
 from player import Player
+from floppybird import *
 
 WIDTH = 1920
 HEIGHT = 1080
@@ -121,6 +122,11 @@ while mainloop:
               if isinstance(sprite, HornApp) and hornNotUsed:
                 player.resetHappiness()
                 hornNotUsed = False
+              elif isinstance(sprite, FloppyApp):
+                phoneBackground = pygame.image.load("images/floppy_bg.png")
+                phoneBackground.get_rect().centery = 540
+                phoneBackground = phoneBackground.convert()
+                floppyBird = FloppyBird()
 
   # Update and remove the message if necessary
   if message != None:
@@ -129,7 +135,7 @@ while mainloop:
       message = None
 
   if floppyBird != None:
-    floppyBird.run()
+    floppyBird.run(screen)
   elif isWorkBackground :
     # Get the latest paper.
     paper = paperStack.getPaper()
