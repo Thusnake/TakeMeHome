@@ -35,7 +35,7 @@ class Paper(Image):
     Image.__init__(self, PAPER_STACK, "images/paper.png")
     self.destination = PAPER
     try:
-        self.sound = pygame.mixer.Sound(os.path.join('.', 'testSound.wav'))
+        self.sound = pygame.mixer.Sound(os.path.join('.', 'throwPaperSound.wav'))
     except:
         raise UserWarning("Coudn't load the throw paper sound")
 
@@ -47,9 +47,15 @@ class PaperStack(Image):
   def __init__(self):
     Image.__init__(self, PAPER_STACK, "images/papers_stack.png")
     self.paperBuffer = None
+    try:
+        self.sound = pygame.mixer.Sound(os.path.join('.', 'paperFromStackSound.wav'))
+    except:
+        raise UserWarning("Coudn't load the stamp sound")
 
   def onClicked(self):
     self.paperBuffer = Paper()
+    self.sound.play()
+
 
   def getPaper(self):
     paper = self.paperBuffer
@@ -67,10 +73,14 @@ class Bin(Image):
 class Stamp(Image):
   def __init__(self):
     Image.__init__(self, STAMP, "images/stamp.png")
-
+    try:
+        self.sound = pygame.mixer.Sound(os.path.join('.', 'stampSound.wav'))
+    except:
+        raise UserWarning("Coudn't load the stamp sound")
   def onClicked(self):
     self.destination = STAMP
     self.pos[0:2] = PAPER
+    self.sound.play()
 
 class ClashApp(Image):
   def __init__(self):
