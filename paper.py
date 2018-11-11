@@ -8,7 +8,7 @@ class Image(pygame.sprite.Sprite):
     self.pos = [0,0,0,0]
     self.pos[0] = startpos[0] * 1.0
     self.pos[1] = startpos[1] * 1.0
-    self.image = pygame.image.load(imgpath)
+    self.image = pygame.image.load(imgpath).convert_alpha()
     self.rect = self.image.get_rect()
     self.destination = []
 
@@ -31,7 +31,8 @@ class Image(pygame.sprite.Sprite):
 
 class Paper(Image):
   def __init__(self):
-    Image.__init__(self, PAPER, "images/paper.png")
+    Image.__init__(self, PAPER_STACK, "images/paper.png")
+    self.destination = PAPER
 
   def onClicked(self):
     self.destination = BIN_OPENING
@@ -39,6 +40,15 @@ class Paper(Image):
 class PaperStack(Image):
   def __init__(self):
     Image.__init__(self, PAPER_STACK, "images/papers_stack.png")
+    self.paperBuffer = None
+
+  def onClicked(self):
+    self.paperBuffer = Paper()
+
+  def getPaper(self):
+    paper = self.paperBuffer
+    self.paperBuffer = None
+    return paper
 
 class Desk(Image):
   def __init__(self):

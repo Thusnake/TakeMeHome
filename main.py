@@ -33,8 +33,8 @@ FPS = 60                           # desired max. framerate in frames per second
 workGroup = pygame.sprite.LayeredUpdates()
 workGroup.add(Bin(), layer='1')
 workGroup.add(Desk(), layer='2')
-workGroup.add(PaperStack(), layer='3')
-workGroup.add(Paper(), layer='4')
+paperStack = PaperStack()
+workGroup.add(paperStack, layer='3')
 workGroup.add(Stamp(), layer='5')
 
 phoneGroup = pygame.sprite.LayeredUpdates()
@@ -58,15 +58,20 @@ while mainloop:
           screen.blit(workBackground, (0,0))    
           isWorkBackground = True
 
-  # create new Paper on mouseclick
-  if pygame.mouse.get_pressed()[0]:
-    for sprite in workGroup.sprites():
-      if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-        sprite.onClicked()
+    # create new Paper on mouseclick
+    elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+      for sprite in workGroup.sprites():
+        if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+          sprite.onClicked()
   
   pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
 
   if isWorkBackground :
+    # Get the latest paper.
+    paper = paperStack.getPaper()
+    if paper != None:
+      workGroup.add(paper, layer='4')
+
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
     workGroup.draw(screen)
