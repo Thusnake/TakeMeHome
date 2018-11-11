@@ -123,7 +123,11 @@ while mainloop:
 
             print (player.getMoney(), player.getHealth())
             sprite.onClicked()
+            player.decreaseMoney(seconds * 30)
       else: # Phone inputs
+        player.decreaseMoney(seconds * 30)
+        money.reSurface(str(player.getMoney()))
+        screen.blit(money.surface, [DOLLAR[0] + 75, DOLLAR[1] - 25])
         if phoneBackground == None: # There is no app open
           for sprite in phoneGroup.sprites():
             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
