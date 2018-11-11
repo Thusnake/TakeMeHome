@@ -16,8 +16,8 @@ class Image(pygame.sprite.Sprite):
     if len(self.destination) > 1:
       self.pos[0] -= (self.pos[0] - self.destination[0]) / 5
       self.pos[1] -= (self.pos[1] - self.destination[1]) / 5
-      self.pos[0] -= numpy.sign(self.pos[0] - self.destination[0]) * 2
-      self.pos[1] -= numpy.sign(self.pos[1] - self.destination[1]) * 2
+      self.pos[0] -= numpy.sign(self.pos[0] - self.destination[0]) * 3
+      self.pos[1] -= numpy.sign(self.pos[1] - self.destination[1]) * 3
       if numpy.sqrt((self.pos[0] - self.destination[0])**2 + (self.pos[1] - self.destination[1])**2) < 4:
         self.pos[0:2] = self.destination
         self.destination = []
@@ -50,3 +50,8 @@ class Bin(Image):
 class Stamp(Image):
   def __init__(self):
     Image.__init__(self, (959.5, 35), "images/stamp.png")
+
+  def onClicked(self):
+    self.destination = self.pos[0:2]
+    self.pos[0] = 944.5
+    self.pos[1] = 759
