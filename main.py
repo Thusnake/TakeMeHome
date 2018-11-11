@@ -79,6 +79,7 @@ while mainloop:
               player.decreaseMoney(10)
             else:
               latestPaper.stamped = True # Stamp the paper
+              latestPaper.image = pygame.image.load("images/rejected.png").convert_alpha()
 
           print (player.getMoney())
           sprite.onClicked()
@@ -90,6 +91,10 @@ while mainloop:
       workGroup.add(paper, layer='4')
       latestPaper = paper
       
+    # Remove all dead sprites.
+    for element in workGroup.sprites():
+      if element.dead:
+        workGroup.remove(element)
 
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
