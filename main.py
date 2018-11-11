@@ -40,7 +40,8 @@ player = Player()
 happinessBar = HappyBar(player.getHealth())
 constantGroup = pygame.sprite.LayeredUpdates()
 constantGroup.add(happinessBar, layer = '1')
-constantGroup.add(Heart(), layer = '1')
+face = HappyFace()
+constantGroup.add(face, layer = '1')
 constantGroup.add(Dollar(), layer = '1')
 
 money = Message(str(player.getMoney()), 0)
@@ -157,8 +158,17 @@ while mainloop:
     phoneGroup.draw(screen)
 
   constantGroup.remove(happinessBar)
+  constantGroup.remove(face)
   happinessBar = HappyBar(int(player.getHealth()))
   constantGroup.add(happinessBar, layer='1')
+  if player.getHealth() > 70 :
+    face = HappyFace()
+  elif player.getHealth() > 30 :
+    face = NeutralFace()
+  else :
+    face = SadFace()
+  constantGroup.add(face, layer = '1')
+
 
   constantGroup.clear(screen, workBackground)
   constantGroup.update(seconds)

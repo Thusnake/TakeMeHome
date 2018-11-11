@@ -77,6 +77,18 @@ class PaperStack(Image):
     self.paperBuffer = None
     return paper
 
+class HappyFace(Image):
+  def __init__(self):
+    Image.__init__(self, HEART, "images/happy.png")
+
+class NeutralFace(Image):
+  def __init__(self):
+    Image.__init__(self, HEART, "images/neutral.png")
+
+class SadFace(Image):
+  def __init__(self):
+    Image.__init__(self, HEART, "images/sad.png")
+
 class Desk(Image):
   def __init__(self):
     Image.__init__(self, DESK, "images/table.png")
