@@ -85,6 +85,10 @@ class Bin(Image):
   def __init__(self):
     Image.__init__(self, BIN, "images/bin.png")
 
+class TablePhone(Image):
+  def __init__(self):
+    Image.__init__(self, PHONE, "images/phone_table.png")
+
 class Stamp(Image):
   def __init__(self):
     Image.__init__(self, STAMP, "images/stamp.png")
@@ -104,3 +108,7 @@ class ClashApp(Image):
 class HornApp(Image):
   def __init__(self):
     Image.__init__(self, APPR1, "images/hp_icon.png")
+
+class FloppyApp(Image):
+  def __init__(self):
+    Image.__init__(self, APPL2, "images/floppy_bird_icon.png")

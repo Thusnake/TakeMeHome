@@ -6,12 +6,16 @@ import random
 from paper import *
 from player import Player
 
+WIDTH = 1920
+HEIGHT = 1080
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
 pygame.init()
 screen=pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 #winstyle = 0  # |FULLSCREEN # Set the display mode
 BIRDSPEED = 50.0
+
+from texts import *
 
 def write(msg="pygame is cool"):
   myfont = pygame.font.SysFont("None", 32)
@@ -34,6 +38,7 @@ FPS = 60                           # desired max. framerate in frames per second
 workGroup = pygame.sprite.LayeredUpdates()
 workGroup.add(Bin(), layer='1')
 workGroup.add(Desk(), layer='2')
+workGroup.add(TablePhone(), layer='3')
 paperStack = PaperStack()
 workGroup.add(paperStack, layer='3')
 workGroup.add(Stamp(), layer='5')
@@ -41,16 +46,18 @@ workGroup.add(Stamp(), layer='5')
 phoneGroup = pygame.sprite.LayeredUpdates()
 phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
+phoneGroup.add(FloppyApp(), layer='3')
 
 player = Player()
 latestPaper = None
+message = None
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
   player.decreaseHealth(seconds)
   if player.getHealth() <= 0 :
-    print ("You are morbidly depressed")
+    message = Message(gameOverHealth, 0)
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       mainloop = False # pygame window closed by user
@@ -81,8 +88,14 @@ while mainloop:
               latestPaper.stamped = True # Stamp the paper
               latestPaper.image = pygame.image.load("images/rejected.png").convert_alpha()
 
-          print (player.getMoney())
+          print (player.getMoney(), player.getHealth())
           sprite.onClicked()
+
+  # Update and remove the message if necessary
+  if message != None:
+    message.update(seconds)
+    if message.duration != 0 and message.elapsed >= message.duration:
+      message = None
 
   if isWorkBackground :
     # Get the latest paper.
@@ -103,5 +116,8 @@ while mainloop:
     phoneGroup.clear(screen, phoneBackground)
     phoneGroup.update(seconds)
     phoneGroup.draw(screen)
+
+  if message != None:
+    screen.blit(message.surface, [WIDTH/2 + message.leftOffset, 250])
 
   pygame.display.flip()

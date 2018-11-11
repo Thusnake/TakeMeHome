@@ -1,6 +1,6 @@
 class Player:
   def __init__(self):
-    self.happiness = 100.0
+    self.happiness = 1.0
     self.money = 1000.0
 
   def increaseHealth(self, amount):
