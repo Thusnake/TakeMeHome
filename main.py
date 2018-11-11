@@ -8,7 +8,7 @@ from paper import Paper
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
 pygame.init()
-screen=pygame.display.set_mode((640,480)) 
+screen=pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
 #winstyle = 0  # |FULLSCREEN # Set the display mode
 BIRDSPEED = 50.0
 
