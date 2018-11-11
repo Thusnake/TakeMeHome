@@ -43,12 +43,12 @@ phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
 
 player = Player()
+latestPaper = None
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
   player.decreaseHealth(seconds)
-  print ("Health is {0} after decrease of {1}".format(player.getHealth(), seconds))
   if player.getHealth() <= 0 :
     print ("You are morbidly depressed")
   for event in pygame.event.get():
@@ -65,10 +65,22 @@ while mainloop:
           screen.blit(workBackground, (0,0))
           isWorkBackground = True
 
-    # create new Paper on mouseclick
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
       for sprite in workGroup.sprites():
         if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+          if isinstance(sprite,Paper) :
+            print (sprite.stamped)
+            if sprite.stamped : 
+              player.increaseMoney(10)
+            else : 
+              player.decreaseMoney(20)
+          elif isinstance(sprite,Stamp): 
+            if latestPaper == None: # Stamp on table
+              player.decreaseMoney(10)
+            else:
+              latestPaper.stamped = True # Stamp the paper
+
+          print (player.getMoney())
           sprite.onClicked()
 
   if isWorkBackground :
@@ -76,6 +88,8 @@ while mainloop:
     paper = paperStack.getPaper()
     if paper != None:
       workGroup.add(paper, layer='4')
+      latestPaper = paper
+      
 
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)

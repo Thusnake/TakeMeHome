@@ -34,6 +34,7 @@ class Paper(Image):
   def __init__(self):
     Image.__init__(self, PAPER_STACK, "images/paper.png")
     self.destination = PAPER
+    self.stamped = False
     try:
         self.sound = pygame.mixer.Sound(os.path.join('.', 'throwPaperSound.wav'))
     except:
