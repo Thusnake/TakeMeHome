@@ -48,6 +48,8 @@ phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
 phoneGroup.add(FloppyApp(), layer='3')
 
+phoneBackground = None
+
 player = Player()
 latestPaper = None
 message = None
@@ -92,9 +94,16 @@ while mainloop:
             print (player.getMoney(), player.getHealth())
             sprite.onClicked()
       else: # Phone inputs
-        for sprite in phoneGroup.sprites():
-          if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-            sprite.onClicked()
+        if phoneBackground == None: # There is no app open
+          for sprite in phoneGroup.sprites():
+            if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+              sprite.onClicked()
+        elif phoneBackground == "images/hp_bg.png":
+          pass
+        elif phoneBackground == "images/yelling_bg.png":
+          pass
+        elif phoneBackground == "images/floppy_bg.png":
+          pass
 
   # Update and remove the message if necessary
   if message != None:
