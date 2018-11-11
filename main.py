@@ -59,6 +59,7 @@ phoneGroup.add(FloppyApp(), layer='3')
 
 latestPaper = None
 message = None
+floppyBird = None
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
@@ -103,7 +104,9 @@ while mainloop:
         if phoneBackground == None: # There is no app open
           for sprite in phoneGroup.sprites():
             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-              sprite.onClicked()
+              if isinstance(sprite, FloppyApp):
+                phoneBackground = "images/floppy_bg.png"
+                floppyBird = FloppyBird()
         elif phoneBackground == "images/hp_bg.png":
           pass
         elif phoneBackground == "images/yelling_bg.png":
@@ -117,7 +120,9 @@ while mainloop:
     if message.duration != 0 and message.elapsed >= message.duration:
       message = None
 
-  if isWorkBackground :
+  if floppyBird != None:
+    floppyBird.run()
+  elif isWorkBackground :
     # Get the latest paper.
     paper = paperStack.getPaper()
     if paper != None:
