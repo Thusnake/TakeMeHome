@@ -117,6 +117,10 @@ class Heart(Image):
   def __init__(self):
     Image.__init__(self, HEART, "images/heart.png")
 
+class Dollar(Image):
+  def __init__(self):
+    Image.__init__(self, DOLLAR, "images/dollar.png")
+
 class HappyBar(pygame.sprite.Sprite):
     """shows a bar with the hitpoints of a Bird sprite
        with a given bossnumber, the Lifebar class can 

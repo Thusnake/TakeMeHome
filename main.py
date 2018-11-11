@@ -40,6 +40,7 @@ happinessBar = HappyBar(player.getHealth())
 constantGroup = pygame.sprite.LayeredUpdates()
 constantGroup.add(happinessBar, layer = '1')
 constantGroup.add(Heart(), layer = '1')
+constantGroup.add(Dollar(), layer = '1')
 
 money = Message(str(player.getMoney()), 0)
 
@@ -142,12 +143,12 @@ while mainloop:
   happinessBar = HappyBar(int(player.getHealth()))
   constantGroup.add(happinessBar, layer='1')
 
-  money.reSurface(str(player.getMoney()))
-  screen.blit(money.surface, [150, 75])
-
   constantGroup.clear(screen, workBackground)
   constantGroup.update(seconds)
   constantGroup.draw(screen)
+
+  money.reSurface(str(player.getMoney()))
+  screen.blit(money.surface, [DOLLAR[0] + 75, DOLLAR[1] - 25])
 
   if message != None:
     screen.blit(message.surface, [WIDTH/2 + message.leftOffset, 250])
