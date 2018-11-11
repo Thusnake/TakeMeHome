@@ -21,8 +21,8 @@ def write(msg="pygame is cool"):
 workBackground = pygame.Surface((screen.get_width(), screen.get_height()))
 workBackground.fill((255,255,255))     # fill white
 workBackground = workBackground.convert()  # jpg can not have transparency
-phoneBackground = pygame.Surface((screen.get_width(), screen.get_height()))
-phoneBackground.fill((111,111,111))     # fill white
+phoneBackground = pygame.image.load("images/phone_fullscreen.png")
+phoneBackground.get_rect().centery = 540
 phoneBackground = phoneBackground.convert()  # jpg can not have transparency
 screen.blit(workBackground, (0,0))     # blit background on screen (overwriting all)
 isWorkBackground = True
@@ -30,13 +30,16 @@ clock = pygame.time.Clock()        # create pygame clock object
 mainloop = True
 FPS = 60                           # desired max. framerate in frames per second.
 
-allgroup = pygame.sprite.LayeredUpdates()
+workGroup = pygame.sprite.LayeredUpdates()
+workGroup.add(Bin(), layer='1')
+workGroup.add(Desk(), layer='2')
+workGroup.add(PaperStack(), layer='3')
+workGroup.add(Paper(), layer='4')
+workGroup.add(Stamp(), layer='5')
 
-allgroup.add(Bin(), layer='1')
-allgroup.add(Desk(), layer='2')
-allgroup.add(PaperStack(), layer='3')
-allgroup.add(Stamp(), layer='5')
-allgroup.add(Paper(), layer='4')
+phoneGroup = pygame.sprite.LayeredUpdates()
+phoneGroup.add(ClashApp(), layer='3')
+phoneGroup.add(HornApp(), layer='3')
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
@@ -57,15 +60,19 @@ while mainloop:
 
   # create new Paper on mouseclick
   if pygame.mouse.get_pressed()[0]:
-    for sprite in allgroup.sprites():
+    for sprite in workGroup.sprites():
       if sprite.rect.collidepoint(pygame.mouse.get_pos()):
         sprite.onClicked()
 
   pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
 
   if isWorkBackground :
-    allgroup.clear(screen, workBackground)
-    allgroup.update(seconds)
-    allgroup.draw(screen)
+    workGroup.clear(screen, workBackground)
+    workGroup.update(seconds)
+    workGroup.draw(screen)
+  else:
+    phoneGroup.clear(screen, phoneBackground)
+    phoneGroup.update(seconds)
+    phoneGroup.draw(screen)
 
   pygame.display.flip()
