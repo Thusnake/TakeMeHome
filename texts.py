@@ -15,3 +15,9 @@ class Message:
 
   def update(self, seconds):
     self.elapsed += seconds
+
+  def reSurface(self, text):
+    self.text = text
+    self.surface = font.render(self.text, True, (0, 128, 0))
+    self.leftOffset = -font.size(self.text)[0]/2
+    self.topOffset = -font.size(self.text)[1]/2

@@ -140,7 +140,7 @@ while mainloop:
 
   constantGroup.remove(happinessBar)
   happinessBar = HappyBar(int(player.getHealth()))
-  constantGroup.add(happinessBar)
+  constantGroup.add(happinessBar, layer='1')
 
   money.reSurface(str(player.getMoney()))
   screen.blit(money.surface, [150, 75])
