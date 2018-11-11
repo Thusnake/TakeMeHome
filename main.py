@@ -5,10 +5,13 @@ import os
 import random
 from paper import *
 from player import Player
+from app import *
+from clash import *
 from floppybird import *
 
 WIDTH = 1920
 HEIGHT = 1080
+GAME_OVER = False
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
 pygame.init()
@@ -58,26 +61,38 @@ phoneGroup = pygame.sprite.LayeredUpdates()
 phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
 phoneGroup.add(FloppyApp(), layer='3')
+phoneGroup.add(DiabloApp(), layer='3')
 
 latestPaper = None
 message = None
-floppyBird = None
+app = None
+clashTimer = 30
+
+def randomizeClashTimer():
+  clashTimer = random.randint(15,45)
 
 hornNotUsed = True
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
-  if isWorkBackground:
+
+  clashTimer -= seconds
+
+  if isWorkBackground and not GAME_OVER:
     player.decreaseHealth(seconds * 2)
 
-  if player.getHealth() <= 0 :
+  if player.getHealth() <= 0:
     message = Message(gameOverHealth, 0)
+    GAME_OVER = True
+  elif player.getMoney() <= 0:
+    message = Message(gameOverMoney, 0)
+    GAME_OVER = True
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       mainloop = False # pygame window closed by user
-    elif floppyBird != None:
-      floppyBird.key(event)
+    elif app != None:
+      app.key(event)
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
         mainloop = False # user pressed ESC
@@ -114,7 +129,7 @@ while mainloop:
             if sprite.rect.collidepoint(pygame.mouse.get_pos()):
               if isinstance(sprite, FloppyApp):
                 phoneBackground = "images/floppy_bg.png"
-                floppyBird = FloppyBird()
+                app = FloppyBird()
         elif phoneBackground == "images/hp_bg.png":
           pass
         elif phoneBackground == "images/yelling_bg.png":
@@ -132,7 +147,11 @@ while mainloop:
                 # phoneBackground.get_rect().centery = 540
                 # phoneBackground.get_rect().centerx = WIDTH/2
                 # phoneBackground = phoneBackground.convert()
-                floppyBird = FloppyBird()
+                app = FloppyBird()
+              elif isinstance(sprite, DiabloApp):
+                player.decreaseHealth(100)
+              elif isinstance(sprite, ClashApp):
+                app = Clash()
 
   # Update and remove the message if necessary
   if message != None:
@@ -140,12 +159,15 @@ while mainloop:
     if message.duration != 0 and message.elapsed >= message.duration:
       message = None
 
-  if floppyBird != None:
-    floppyBird.run()
-    screen.blit(floppyBird.screen, [690, 52])
-    if floppyBird.done == 1:
-      player.increaseHealth(floppyBird.score ** 2)
-      floppyBird = None
+  if app != None:
+    app.run()
+    screen.blit(app.screen, [690, 52])
+    if isinstance(app, Clash):
+      app.updateClashTimer(timer)
+    if app.done == 1:
+      if isinstance(app, FloppyBird):
+        player.increaseHealth(app.score ** 2)
+      app = None
   elif isWorkBackground :
     # Get the latest paper.
     paper = paperStack.getPaper()

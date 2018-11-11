@@ -1,10 +1,10 @@
 from random import randint
 import pygame
+from app import *
 
-class FloppyBird:
+class FloppyBird(App):
     def __init__(self):
-        self.size = (548, 962)
-        self.done = 0
+        App.__init__(self, "images/floppy_bg.png")
         self.clock = pygame.time.Clock()
         self.x = 250
         self.y = 250
@@ -15,13 +15,8 @@ class FloppyBird:
         self.column_ysize = randint(0, 673)#0.7*height
         self.column_speed = 2
         self.score = 0
-        self.screen = pygame.Surface(self.size)
 
-        self.bg = pygame.image.load("images/floppy_bg.png")
-        self.bg.get_rect().centery = 540
-        self.bg = self.bg.convert()  # jpg can not have transparency
-
-        
+        self.sprite = pygame.image.load("images/floppy_bird.png")
 
     def Score(self, score):
         self.font = pygame.font.SysFont(None, 30)
@@ -34,24 +29,23 @@ class FloppyBird:
         self.screen.blit(self.text, [120,250])
 
     def floppybird(self, x, y):
-        pygame.draw.circle(self.screen, (0, 0, 255), [x,y], 20)
+        self.screen.blit(self.sprite, [x-20,y-20])
 
     def column(self, x, y, xsize, ysize):
         pygame.draw.rect(self.screen, (0, 255, 0), [x,y,xsize, ysize])
         pygame.draw.rect(self.screen, (0, 255, 0), [x, int(y + ysize + 150), xsize, 962-ysize-150])#length*0.714
 
     def key(self, event):
+        App.key(self, event)
         if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_ESCAPE:
-              self.done = 1
-            elif event.key == pygame.K_w:
+            if event.key == pygame.K_w:
                 self.speed_y = -10
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
                 self.speed_y = 5;
 
     def run(self):
-        self.screen.blit(self.bg, [0,0])
+        App.run(self)
         self.column(self.column_xlocation, self.column_ylocation, self.column_xsize, self.column_ysize)
         self.Score(self.score)
         self.floppybird(self.x, self.y)

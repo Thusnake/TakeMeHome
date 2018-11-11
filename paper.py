@@ -125,6 +125,10 @@ class FloppyApp(Image):
   def __init__(self):
     Image.__init__(self, APPL2, "images/floppy_bird_icon.png")
 
+class DiabloApp(Image):
+  def __init__(self):
+    Image.__init__(self, APPR2, "images/diablo.png")
+
 class Heart(Image):
   def __init__(self):
     Image.__init__(self, HEART, "images/heart.png")
