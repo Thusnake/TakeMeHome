@@ -163,7 +163,8 @@ while mainloop:
     app.run()
     screen.blit(app.screen, [690, 52])
     if isinstance(app, Clash):
-      app.updateClashTimer(timer)
+      app.updateClashTimer(clashTimer)
+      screen.blit(app.surface, [0,0])
     if app.done == 1:
       if isinstance(app, FloppyBird):
         player.increaseHealth(app.score ** 2)
