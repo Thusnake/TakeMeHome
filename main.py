@@ -38,6 +38,7 @@ FPS = 60                           # desired max. framerate in frames per second
 happinessBar = HappyBar(100)
 constantGroup = pygame.sprite.LayeredUpdates()
 constantGroup.add(happinessBar, layer = '1')
+constantGroup.add(Heart(), layer = '1')
 
 workGroup = pygame.sprite.LayeredUpdates()
 workGroup.add(Bin(), layer='1')
@@ -61,7 +62,7 @@ message = None
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
-  player.decreaseHealth(seconds)
+  player.decreaseHealth(seconds * 2)
   if player.getHealth() <= 0 :
     message = Message(gameOverHealth, 0)
   for event in pygame.event.get():
@@ -130,7 +131,7 @@ while mainloop:
     constantGroup.remove(happinessBar)
 
     happinessBar = HappyBar(int(player.getHealth()))
-    constantGroup.add(happinessBar)
+    constantGroup.add(happinessBar, layer = '1')
 
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
