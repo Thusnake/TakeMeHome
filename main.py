@@ -73,6 +73,8 @@ while mainloop:
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       mainloop = False # pygame window closed by user
+    elif floppyBird != None:
+      floppyBird.key(event)
     elif event.type == pygame.KEYDOWN:
       if event.key == pygame.K_ESCAPE:
         mainloop = False # user pressed ESC
@@ -123,9 +125,9 @@ while mainloop:
                 player.resetHappiness()
                 hornNotUsed = False
               elif isinstance(sprite, FloppyApp):
-                phoneBackground = pygame.image.load("images/floppy_bg.png")
-                phoneBackground.get_rect().centery = 540
-                phoneBackground = phoneBackground.convert()
+                # phoneBackground = pygame.image.load("images/floppy_bg.png")
+                # phoneBackground.get_rect().centery = 540
+                # phoneBackground = phoneBackground.convert()
                 floppyBird = FloppyBird()
 
   # Update and remove the message if necessary
@@ -135,7 +137,10 @@ while mainloop:
       message = None
 
   if floppyBird != None:
-    floppyBird.run(screen)
+    floppyBird.run()
+    screen.blit(floppyBird.screen, [690, 52])
+    if floppyBird.done == 1:
+      floppyBird = None
   elif isWorkBackground :
     # Get the latest paper.
     paper = paperStack.getPaper()
@@ -148,10 +153,12 @@ while mainloop:
       if element.dead:
         workGroup.remove(element)
 
+    screen.blit(workBackground, (0,0))
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
     workGroup.draw(screen)
   else:
+    screen.blit(phoneBackground, (0,0))
     phoneGroup.clear(screen, phoneBackground)
     phoneGroup.update(seconds)
     phoneGroup.draw(screen)

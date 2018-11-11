@@ -15,6 +15,7 @@ class FloppyBird:
         self.column_ysize = randint(0, 673)#0.7*height
         self.column_speed = 2
         self.score = 0
+        self.screen = pygame.Surface(self.size)
 
     def Score(self, score):
         self.font = pygame.font.SysFont(None, 30)
@@ -31,28 +32,27 @@ class FloppyBird:
 
     def column(self, x, y, xsize, ysize):
         pygame.draw.rect(self.screen, (0, 255, 0), [x,y,xsize, ysize])
-        pygame.draw.rect(self.screen, (0, 255, 0), [x, int(y + ysize + 150), xsize, ysize+391])#length*0.714
+        pygame.draw.rect(self.screen, (0, 255, 0), [x, int(y + ysize + 150), xsize, 962-ysize-150])#length*0.714
 
-    def run(self, screen):
-        self.screen = screen
+    def key(self, event):
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_ESCAPE:
+              self.done = 1
+            elif event.key == pygame.K_w:
+                self.speed_y = -10
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_w:
+                self.speed_y = 5;
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                self.done = 1
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_w:
-                    self.speed_y = -10
-            if event.type == pygame.KEYUP:
-                if event.key == pygame.K_w:
-                    self.speed_y = 5;
-
+    def run(self):
+        self.screen.fill((255,255,255))
         self.column(self.column_xlocation, self.column_ylocation, self.column_xsize, self.column_ysize)
         self.Score(self.score)
         self.floppybird(self.x, self.y)
         self.column_xlocation -= self.column_speed
         self.y += self.speed_y
         if self.y > 800:#~0.94*height
-            end()
+            self.end()
             self.column_speed = 0
             self.speed_y = 0
         if self.x > self.column_xlocation and self.x < self.column_xlocation + 3:
@@ -62,11 +62,11 @@ class FloppyBird:
             self.column_xlocation = 545
             self.column_ysize = randint(0, 673)#~0.7*height
 
-        if self.x + 20 > self.column_xlocation and self.x - 50 < self.column_xlocation + self.column_xsize and (self.y + 20 < self.column_ysize or self.y - 20 < self.column_ysize):
+        if self.x + 20 > self.column_xlocation and self.x - 50 < self.column_xlocation + self.column_xsize and (self.y + 20 > self.column_ysize+150 or self.y - 20 < self.column_ysize):
             self.end()
             self.column_speed = 0
             self.speed_y = 0
 
-        # screenmode.blit(self.screen, (0,0))
+        
         pygame.display.flip()
         self.clock.tick(60)
