@@ -1,6 +1,8 @@
 from random import randint
 import pygame
 from app import *
+import random
+import os
 
 class FloppyBird(App):
     def __init__(self):
@@ -17,6 +19,11 @@ class FloppyBird(App):
         self.score = 0
 
         self.sprite = pygame.image.load("images/floppy_bird.png")
+        try:
+            self.jumpSound1 = pygame.mixer.Sound(os.path.join('.', 'floppyJump1.wav'))
+            self.jumpSound2 = pygame.mixer.Sound(os.path.join('.', 'floppyJump2.wav'))
+        except:
+            raise UserWarning("Coudn't load the jump sounds")
 
     def Score(self, score):
         self.font = pygame.font.SysFont(None, 30)
@@ -40,6 +47,10 @@ class FloppyBird(App):
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_w:
                 self.speed_y = -10
+                if random.randint(1, 2) == 1:
+                    self.jumpSound1.play()
+                else:
+                    self.jumpSound2.play()
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_w:
                 self.speed_y = 5;
@@ -67,6 +78,6 @@ class FloppyBird(App):
             self.column_speed = 0
             self.speed_y = 0
 
-        
+
         pygame.display.flip()
         self.clock.tick(60)
