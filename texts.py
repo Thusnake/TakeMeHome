@@ -2,6 +2,7 @@ import pygame
 
 font = pygame.font.Font(pygame.font.match_font('segoeui'), 72)
 gameOverHealth = "You are morbidly depressed."
+gameOverMoney = "You are morbidly bankrupt."
 
 class Message:
   def __init__(self, text, duration=0): # 0 is indefinite
