@@ -73,23 +73,28 @@ while mainloop:
           isWorkBackground = True
 
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-      for sprite in workGroup.sprites():
-        if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-          if isinstance(sprite,Paper) :
-            print (sprite.stamped)
-            if sprite.stamped : 
-              player.increaseMoney(10)
-            else : 
-              player.decreaseMoney(20)
-          elif isinstance(sprite,Stamp): 
-            if latestPaper == None: # Stamp on table
-              player.decreaseMoney(10)
-            else:
-              latestPaper.stamped = True # Stamp the paper
-              latestPaper.image = pygame.image.load("images/rejected.png").convert_alpha()
+      if isWorkBackground: # Work inputs
+        for sprite in workGroup.sprites():
+          if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+            if isinstance(sprite,Paper) :
+              print (sprite.stamped)
+              if sprite.stamped : 
+                player.increaseMoney(10)
+              else : 
+                player.decreaseMoney(20)
+            elif isinstance(sprite,Stamp): 
+              if latestPaper == None: # Stamp on table
+                player.decreaseMoney(10)
+              else:
+                latestPaper.stamped = True # Stamp the paper
+                latestPaper.image = pygame.image.load("images/rejected.png").convert_alpha()
 
-          print (player.getMoney(), player.getHealth())
-          sprite.onClicked()
+            print (player.getMoney(), player.getHealth())
+            sprite.onClicked()
+      else: # Phone inputs
+        for sprite in phoneGroup.sprites():
+          if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+            sprite.onClicked()
 
   # Update and remove the message if necessary
   if message != None:
