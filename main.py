@@ -26,15 +26,13 @@ clock = pygame.time.Clock()        # create pygame clock object
 mainloop = True
 FPS = 60                           # desired max. framerate in frames per second. 
 
-allgroup = pygame.sprite.Group()
+allgroup = pygame.sprite.LayeredUpdates()
 
-Image.groups = allgroup
-
-Bin()
-Desk()
-PaperStack()
-Stamp()
-Paper()
+allgroup.add(Bin(), layer='1')
+allgroup.add(Desk(), layer='2')
+allgroup.add(PaperStack(), layer='3')
+allgroup.add(Stamp(), layer='5')
+allgroup.add(Paper(), layer='4')
 
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
