@@ -12,6 +12,7 @@ class Image(pygame.sprite.Sprite):
     self.image = pygame.image.load(imgpath).convert_alpha()
     self.rect = self.image.get_rect()
     self.destination = []
+    self.dead = False
 
   def update(self, seconds):
     # If some destination is set.
@@ -34,6 +35,9 @@ class Paper(Image):
   def __init__(self):
     Image.__init__(self, PAPER_STACK, "images/paper.png")
     self.destination = PAPER
+    self.stamped = False
+    self.thrashed = False
+    self.alpha = 0
     try:
         self.sound = pygame.mixer.Sound(os.path.join('.', 'throwPaperSound.wav'))
     except:
@@ -42,6 +46,17 @@ class Paper(Image):
   def onClicked(self):
     self.destination = BIN_OPENING
     self.sound.play()
+    self.thrashed = True
+
+  def update(self, seconds):
+    Image.update(self, seconds)
+    if self.thrashed:
+      self.image = pygame.transform.scale(self.image, (round(self.image.get_width() * 9/10) - 1, round(self.image.get_height() * 9/10) - 1))
+      self.rect.centerx += 350
+      self.rect.centery += 200
+      if self.image.get_width() <= 10 or self.image.get_height() <= 10:
+        self.thrashed = False
+        self.dead = True
 
 class PaperStack(Image):
   def __init__(self):

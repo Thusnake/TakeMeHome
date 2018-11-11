@@ -1,13 +1,13 @@
 class Player:
   def __init__(self):
-    self.health = 100
-    self.money = 1000
+    self.happiness = 100.0
+    self.money = 1000.0
 
   def increaseHealth(self, amount):
-   self.health += amount
+   self.happiness += amount
 
   def decreaseHealth(self, amount):
-   self.health -= amount
+   self.happiness -= amount
 
   def increaseMoney(self, amount):
    self.money += amount
@@ -16,7 +16,7 @@ class Player:
    self.money -= amount
 
   def getHealth(self):
-   return self.health
+   return self.happiness
 
   def getMoney(self):
    return self.money

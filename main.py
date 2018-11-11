@@ -4,6 +4,7 @@ import pygame
 import os
 import random
 from paper import *
+from player import Player
 
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
@@ -41,9 +42,15 @@ phoneGroup = pygame.sprite.LayeredUpdates()
 phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
 
+player = Player()
+latestPaper = None
+
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
+  player.decreaseHealth(seconds)
+  if player.getHealth() <= 0 :
+    print ("You are morbidly depressed")
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       mainloop = False # pygame window closed by user
@@ -58,19 +65,36 @@ while mainloop:
           screen.blit(workBackground, (0,0))
           isWorkBackground = True
 
-    # create new Paper on mouseclick
     elif event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
       for sprite in workGroup.sprites():
         if sprite.rect.collidepoint(pygame.mouse.get_pos()):
-          sprite.onClicked()
+          if isinstance(sprite,Paper) :
+            print (sprite.stamped)
+            if sprite.stamped : 
+              player.increaseMoney(10)
+            else : 
+              player.decreaseMoney(20)
+          elif isinstance(sprite,Stamp): 
+            if latestPaper == None: # Stamp on table
+              player.decreaseMoney(10)
+            else:
+              latestPaper.stamped = True # Stamp the paper
+              latestPaper.image = pygame.image.load("images/rejected.png").convert_alpha()
 
-  pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
+          print (player.getMoney())
+          sprite.onClicked()
 
   if isWorkBackground :
     # Get the latest paper.
     paper = paperStack.getPaper()
     if paper != None:
       workGroup.add(paper, layer='4')
+      latestPaper = paper
+      
+    # Remove all dead sprites.
+    for element in workGroup.sprites():
+      if element.dead:
+        workGroup.remove(element)
 
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
