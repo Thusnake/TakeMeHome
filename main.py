@@ -8,7 +8,7 @@ from paper import *
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
 pygame.init()
-screen=pygame.display.set_mode((0,0), pygame.FULLSCREEN) 
+screen=pygame.display.set_mode((0,0), pygame.FULLSCREEN)
 #winstyle = 0  # |FULLSCREEN # Set the display mode
 BIRDSPEED = 50.0
 
@@ -26,9 +26,9 @@ phoneBackground.fill((111,111,111))     # fill white
 phoneBackground = phoneBackground.convert()  # jpg can not have transparency
 screen.blit(workBackground, (0,0))     # blit background on screen (overwriting all)
 isWorkBackground = True
-clock = pygame.time.Clock()        # create pygame clock object 
+clock = pygame.time.Clock()        # create pygame clock object
 mainloop = True
-FPS = 60                           # desired max. framerate in frames per second. 
+FPS = 60                           # desired max. framerate in frames per second.
 
 allgroup = pygame.sprite.LayeredUpdates()
 
@@ -51,8 +51,8 @@ while mainloop:
         if isWorkBackground:
           screen.blit(phoneBackground, (0,0))
           isWorkBackground = False
-        else : 
-          screen.blit(workBackground, (0,0))    
+        else :
+          screen.blit(workBackground, (0,0))
           isWorkBackground = True
 
   # create new Paper on mouseclick
@@ -60,7 +60,7 @@ while mainloop:
     for sprite in allgroup.sprites():
       if sprite.rect.collidepoint(pygame.mouse.get_pos()):
         sprite.onClicked()
-  
+
   pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
 
   if isWorkBackground :

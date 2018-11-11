@@ -1,5 +1,6 @@
 import pygame
 import numpy
+import os
 
 class Image(pygame.sprite.Sprite):
   def __init__(self, startpos=(1000,50), imgpath="images/paper.png"):
@@ -31,9 +32,14 @@ class Image(pygame.sprite.Sprite):
 class Paper(Image):
   def __init__(self):
     Image.__init__(self, (944.5, 759), "images/paper.png")
+    try:
+        self.sound = pygame.mixer.Sound(os.path.join('.', 'testSound.wav'))
+    except:
+        raise UserWarning("Coudn't load the throw paper sound")
 
   def onClicked(self):
     self.destination = [270, 793]
+    self.sound.play()
 
 class PaperStack(Image):
   def __init__(self):
