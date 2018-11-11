@@ -3,7 +3,7 @@ import numpy
 
 class Image(pygame.sprite.Sprite):
   def __init__(self, startpos=(1000,50), imgpath="images/paper.png"):
-    pygame.sprite.Sprite.__init__(self, self.groups)
+    pygame.sprite.Sprite.__init__(self)
     self.pos = [0,0,0,0]
     self.pos[0] = startpos[0] * 1.0
     self.pos[1] = startpos[1] * 1.0
