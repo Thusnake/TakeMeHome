@@ -4,6 +4,7 @@ import pygame
 import os
 import random
 from paper import *
+from player import Player
 
 
 pygame.mixer.pre_init(44100, -16, 2, 2048) # setup mixer to avoid sound lag
@@ -41,9 +42,15 @@ phoneGroup = pygame.sprite.LayeredUpdates()
 phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
 
+player = Player()
+
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
+  player.decreaseHealth(seconds)
+  print ("Health is {0} after decrease of {1}".format(player.getHealth(), seconds))
+  if player.getHealth() <= 0 :
+    print ("You are morbidly depressed")
   for event in pygame.event.get():
     if event.type == pygame.QUIT:
       mainloop = False # pygame window closed by user
@@ -63,8 +70,6 @@ while mainloop:
       for sprite in workGroup.sprites():
         if sprite.rect.collidepoint(pygame.mouse.get_pos()):
           sprite.onClicked()
-
-  pygame.display.set_caption("[FPS]: %.2f birds: %i" % (clock.get_fps(), 0))
 
   if isWorkBackground :
     # Get the latest paper.
