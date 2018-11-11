@@ -137,7 +137,7 @@ class HappyBar(pygame.sprite.Sprite):
       self.paint()
         
     def paint(self):
-      self.image = pygame.Surface((700, 300))
+      self.image = pygame.Surface((600, 300))
       self.image.set_colorkey((0,0,0)) # black transparent
       self.rectangle = pygame.draw.rect(self.image, (0,255,0), (HAPPYBAR[0],HAPPYBAR[1],self.health * 4,100),0)
       self.rect = self.image.get_rect()
