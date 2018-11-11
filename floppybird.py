@@ -18,12 +18,12 @@ class FloppyBird:
 
     def Score(self, score):
         self.font = pygame.font.SysFont(None, 30)
-        self.text = font.render("Memory collected: " + str(score), True, (0, 0, 0))
+        self.text = self.font.render("Memory collected: " + str(score), True, (0, 0, 0))
         self.screen.blit(self.text, [0, 0])
 
     def end(self):
         self.font = pygame.font.SysFont(None,30)
-        self.text = font.render("Oh no! You ran out of memory", True, (255, 0 ,0))
+        self.text = self.font.render("Oh no! You ran out of memory", True, (255, 0 ,0))
         self.screen.blit(self.text, [120,250])
 
     def floppybird(self, x, y):
@@ -46,9 +46,9 @@ class FloppyBird:
                 if event.key == pygame.K_w:
                     self.speed_y = 5;
 
-        column(self.column_xlocation, self.column_ylocation, self.column_xsize, self.column_ysize)
-        Score(self.score)
-        floppybird(self.x, self.y)
+        self.column(self.column_xlocation, self.column_ylocation, self.column_xsize, self.column_ysize)
+        self.Score(self.score)
+        self.floppybird(self.x, self.y)
         self.column_xlocation -= self.column_speed
         self.y += self.speed_y
         if self.y > 800:#~0.94*height
@@ -63,10 +63,10 @@ class FloppyBird:
             self.column_ysize = randint(0, 673)#~0.7*height
 
         if self.x + 20 > self.column_xlocation and self.x - 50 < self.column_xlocation + self.column_xsize and (self.y + 20 < self.column_ysize or self.y - 20 < self.column_ysize):
-            end()
+            self.end()
             self.column_speed = 0
             self.speed_y = 0
 
-        screenmode.blit(self.screen, (0,0))
+        # screenmode.blit(self.screen, (0,0))
         pygame.display.flip()
         self.clock.tick(60)
