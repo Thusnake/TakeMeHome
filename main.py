@@ -61,6 +61,8 @@ latestPaper = None
 message = None
 floppyBird = None
 
+hornNotUsed = True
+
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
@@ -113,6 +115,12 @@ while mainloop:
           pass
         elif phoneBackground == "images/floppy_bg.png":
           pass
+        else :
+          for sprite in phoneGroup.sprites():
+            if sprite.rect.collidepoint(pygame.mouse.get_pos()):
+              if isinstance(sprite, HornApp) and hornNotUsed:
+                player.resetHappiness()
+                hornNotUsed = False
 
   # Update and remove the message if necessary
   if message != None:
