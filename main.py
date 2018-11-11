@@ -57,8 +57,6 @@ phoneGroup.add(ClashApp(), layer='3')
 phoneGroup.add(HornApp(), layer='3')
 phoneGroup.add(FloppyApp(), layer='3')
 
-phoneBackground = None
-
 latestPaper = None
 message = None
 
