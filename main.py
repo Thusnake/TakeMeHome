@@ -34,10 +34,13 @@ isWorkBackground = True
 clock = pygame.time.Clock()        # create pygame clock object
 mainloop = True
 FPS = 60                           # desired max. framerate in frames per second.
+player = Player()
 
-happinessBar = HappyBar(100)
+happinessBar = HappyBar(player.getHealth())
 constantGroup = pygame.sprite.LayeredUpdates()
 constantGroup.add(happinessBar, layer = '1')
+
+money = Message(str(player.getMoney()), 0)
 
 workGroup = pygame.sprite.LayeredUpdates()
 workGroup.add(Bin(), layer='1')
@@ -54,7 +57,6 @@ phoneGroup.add(FloppyApp(), layer='3')
 
 phoneBackground = None
 
-player = Player()
 latestPaper = None
 message = None
 
@@ -127,22 +129,24 @@ while mainloop:
       if element.dead:
         workGroup.remove(element)
 
-    constantGroup.remove(happinessBar)
-
-    happinessBar = HappyBar(int(player.getHealth()))
-    constantGroup.add(happinessBar)
-
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
     workGroup.draw(screen)
-    constantGroup.clear(screen, workBackground)
-    constantGroup.update(seconds)
-    constantGroup.draw(screen)
   else:
     phoneGroup.clear(screen, phoneBackground)
     phoneGroup.update(seconds)
     phoneGroup.draw(screen)
-  
+
+  constantGroup.remove(happinessBar)
+  happinessBar = HappyBar(int(player.getHealth()))
+  constantGroup.add(happinessBar)
+
+  money.reSurface(str(player.getMoney()))
+  screen.blit(money.surface, [150, 75])
+
+  constantGroup.clear(screen, workBackground)
+  constantGroup.update(seconds)
+  constantGroup.draw(screen)
 
   if message != None:
     screen.blit(message.surface, [WIDTH/2 + message.leftOffset, 250])
