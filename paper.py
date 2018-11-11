@@ -1,5 +1,6 @@
 import pygame
 import numpy
+from coordinates import *
 
 class Image(pygame.sprite.Sprite):
   def __init__(self, startpos=(1000,50), imgpath="images/paper.png"):
@@ -30,28 +31,27 @@ class Image(pygame.sprite.Sprite):
 
 class Paper(Image):
   def __init__(self):
-    Image.__init__(self, (944.5, 759), "images/paper.png")
+    Image.__init__(self, PAPER, "images/paper.png")
 
   def onClicked(self):
-    self.destination = [270, 793]
+    self.destination = BIN_OPENING
 
 class PaperStack(Image):
   def __init__(self):
-    Image.__init__(self, (1805, 425), "images/papers_stack.png")
+    Image.__init__(self, PAPER_STACK, "images/papers_stack.png")
 
 class Desk(Image):
   def __init__(self):
-    Image.__init__(self, (1298.5, 838), "images/table.png")
+    Image.__init__(self, DESK, "images/table.png")
 
 class Bin(Image):
   def __init__(self):
-    Image.__init__(self, (268, 959.5), "images/bin.png")
+    Image.__init__(self, BIN, "images/bin.png")
 
 class Stamp(Image):
   def __init__(self):
-    Image.__init__(self, (959.5, 35), "images/stamp.png")
+    Image.__init__(self, STAMP, "images/stamp.png")
 
   def onClicked(self):
-    self.destination = self.pos[0:2]
-    self.pos[0] = 944.5
-    self.pos[1] = 759
+    self.destination = STAMP
+    self.pos[0:2] = PAPER
