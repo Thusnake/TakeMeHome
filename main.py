@@ -39,6 +39,7 @@ player = Player()
 happinessBar = HappyBar(player.getHealth())
 constantGroup = pygame.sprite.LayeredUpdates()
 constantGroup.add(happinessBar, layer = '1')
+constantGroup.add(Heart(), layer = '1')
 
 money = Message(str(player.getMoney()), 0)
 
@@ -63,7 +64,7 @@ message = None
 while mainloop:
   milliseconds = clock.tick(FPS)  # milliseconds passed since last frame
   seconds = milliseconds / 1000.0 # seconds passed since last frame
-  player.decreaseHealth(seconds)
+  player.decreaseHealth(seconds * 2)
   if player.getHealth() <= 0 :
     message = Message(gameOverHealth, 0)
   for event in pygame.event.get():
