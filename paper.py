@@ -112,3 +112,25 @@ class HornApp(Image):
 class FloppyApp(Image):
   def __init__(self):
     Image.__init__(self, APPL2, "images/floppy_bird_icon.png")
+
+class HappyBar(pygame.sprite.Sprite):
+    """shows a bar with the hitpoints of a Bird sprite
+       with a given bossnumber, the Lifebar class can 
+       identify the boos (Bird sprite) with this codeline:
+       Bird.birds[bossnumber] """
+    def __init__(self, health):
+      if health < 0 or health > 100:
+        health = 100
+      pygame.sprite.Sprite.__init__(self)
+      self.maxhealth = 100
+      self.oldHealth = 100
+      self.newHealth = 100
+      self.health = health
+      self.paint()
+        
+    def paint(self):
+      self.image = pygame.Surface((500, 500))
+      self.image.set_colorkey((0,0,0)) # black transparent
+      self.rectangle = pygame.draw.rect(self.image, (0,255,0), (HAPPYBAR[0],HAPPYBAR[1],self.health,20),0)
+      self.rect = self.image.get_rect()
+

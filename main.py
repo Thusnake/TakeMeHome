@@ -35,6 +35,10 @@ clock = pygame.time.Clock()        # create pygame clock object
 mainloop = True
 FPS = 60                           # desired max. framerate in frames per second.
 
+happinessBar = HappyBar(100)
+constantGroup = pygame.sprite.LayeredUpdates()
+constantGroup.add(happinessBar, layer = '1')
+
 workGroup = pygame.sprite.LayeredUpdates()
 workGroup.add(Bin(), layer='1')
 workGroup.add(Desk(), layer='2')
@@ -123,13 +127,22 @@ while mainloop:
       if element.dead:
         workGroup.remove(element)
 
+    constantGroup.remove(happinessBar)
+
+    happinessBar = HappyBar(int(player.getHealth()))
+    constantGroup.add(happinessBar)
+
     workGroup.clear(screen, workBackground)
     workGroup.update(seconds)
     workGroup.draw(screen)
+    constantGroup.clear(screen, workBackground)
+    constantGroup.update(seconds)
+    constantGroup.draw(screen)
   else:
     phoneGroup.clear(screen, phoneBackground)
     phoneGroup.update(seconds)
     phoneGroup.draw(screen)
+  
 
   if message != None:
     screen.blit(message.surface, [WIDTH/2 + message.leftOffset, 250])
